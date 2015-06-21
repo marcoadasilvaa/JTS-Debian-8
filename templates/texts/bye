@@ -1,0 +1,14 @@
+
+    AVISO:
+    
+    Este servidor debe ser reiniciado.
+    Antes de continuar, abra una nueva terminal e intente acceder por SSH
+    con el usuario USERNAME, ejecutando:
+    ssh -p 372 USERNAME@SERVERIP
+    
+    ***** SOLO SI HA PODIDO ACCEDER COMO EL USUARIO USERNAME RESPONDA "y" *****
+    
+    y luego pulse la tecla Enter. Caso contrario, interrumpa este script 
+    manualmente sin cerrar su conexión al servidor.
+
+

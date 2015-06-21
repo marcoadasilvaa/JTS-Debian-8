@@ -1,0 +1,20 @@
+*filter
+
+-A INPUT -i lo -j ACCEPT
+-A INPUT -d 127.0.0.0/8 -j REJECT
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+-A OUTPUT -j ACCEPT
+-A INPUT -p tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp --dport 443 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW --dport 372 -j ACCEPT
+-A INPUT -p icmp -j ACCEPT
+-A INPUT -m limit --limit 5/min -j LOG --log-prefix "iptables denied: " --log-level 7
+-A INPUT -j DROP
+-A FORWARD -j DROP
+
+# Agregar aquí las reglas de dropeo para IPs atacantes conocidas
+-I INPUT -s 42.121.14.123 -j DROP
+-I INPUT -s 14.63.227.188 -j DROP
+-I INPUT -s 88.191.152.231 -j DROP
+
+COMMIT

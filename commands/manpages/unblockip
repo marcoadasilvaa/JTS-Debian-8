@@ -1,0 +1,52 @@
+.TH unblockip 8 2013-06-29 "JackTheStripper 1.0 beta 4" "Manual de unblockip"
+.SH NAME
+unblockip - desbloquea una IP
+.SH SYNOPSIS
+.B unblockip
+.RI [ ip ]
+.PP
+.B blockip
+.RI [ ip ]
+.SH DESCRIPTION
+.B unblockip
+elimina todo bloqueo realizado a una IP, ya sea que éste se haya realizado
+manualmente en
+.BR iptables (8)
+o por intermedio de 
+.BR portsentry (8) 
+y
+.B fail2ban
+.br
+Este comando también elimina el bloqueo a la IP que eventualmente pudiese
+haberse
+efectuado en la tabla de enrutamiento mediante 
+.BR route (8)
+.PP
+.B blockip 
+bloquea una IP de forma permanente (solo puede eliminarse este bloqueo
+utilizando
+el comando 
+.B unblockip
+.br
+se recomienda ver
+.BR blockip (8)
+.SH EXAMPLES
+.B unblockip 123.456.78.90
+.SH FILES
+.TP
+.B /etc/iptables.firewall.rules
+Archivo que contiene todas las reglas de iptables
+.TP
+.B /etc/network/if-pre-up.d/firewall
+Archivo requerido por el anterior, para reestablecer las reglas tras reinicios
+del servidor
+.SH SEE ALSO
+.BR blockip (8),
+.BR iptables (8),
+.BR portsentry (8),
+.BR route (8)
+.SH AUTHOR
+Eugenia Bahit <eugenia@member.fsf.org>
+.br
+http://www.eugeniabahit.com/proyectos
+

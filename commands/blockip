@@ -1,0 +1,58 @@
+#!/bin/bash
+
+
+function blockip() {
+    rule="-I INPUT -s $1 -j DROP"
+    sed s/COMMIT//g /etc/iptables.firewall.rules > /tmp/blockip.tmp
+    echo $rule >> /tmp/blockip.tmp
+    echo "COMMIT" >> /tmp/blockip.tmp
+    restore_iptables_rules_file
+    echo "Rule added."
+}
+
+
+function unblockip() {
+    del_iptables=`iptables -D INPUT -s $1 -j DROP`
+    del_route=`route del -host $1 reject`
+    del_fail2ban=`iptables -D fail2ban-ssh -s $1 -j DROP`
+
+    sed -e "s/-I\ INPUT\ -s\ $1\ -j\ DROP//g" /etc/iptables.firewall.rules > /tmp/blockip.tmp
+    restore_iptables_rules_file
+
+    if [ "$del_iptables" == "" ] || [ "$del_fail2ban" == "" ]; then
+        echo "IP Unblocked. Rule deleted."
+    else
+        echo "IP not blocked."
+    fi
+}
+
+
+function restore_iptables_rules_file() {
+    grep . /tmp/blockip.tmp > /tmp/iptr.1
+    sed -e "s/\*filter/&\n/g" /tmp/iptr.1 > /tmp/iptr.2
+    sed -e "s/COMMIT/\n&/g" /tmp/iptr.2 > /etc/iptables.firewall.rules
+    iptables-restore < /etc/iptables.firewall.rules
+    rm /tmp/blockip.tmp
+    rm /tmp/iptr.1 /tmp/iptr.2
+}
+
+
+function execute_command() {
+    comando=$1
+    ip=$2
+    case "$comando" in
+        '/sbin/blockip') blockip $ip;;
+        '/sbin/unblockip') unblockip $ip;;
+        *) echo "Not command found. Ejecutar: man blockip";
+    esac
+}
+
+if [ "$USER" == "root" ]; then
+    if [ "$1" != "" ]; then
+        execute_command $0 $1
+    else
+        echo "No IP found."
+    fi
+else
+    echo "Permiso denegado."
+fi

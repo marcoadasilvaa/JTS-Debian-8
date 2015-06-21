@@ -1,0 +1,39 @@
+.TH blockip 8 2013-06-29 "JackTheStripper 1.0 beta 4" "Manual de blockip"
+.SH NAME
+blockip - bloquea una IP de forma permanente
+.SH SYNOPSIS
+.B blockip
+.RI [ ip ]
+.PP
+.B unblockip
+.RI [ ip ]
+.SH DESCRIPTION
+.B blockip
+bloquea la IP indicada de forma permanente, agregando una regla a iptables(8) y
+grabando la misma, en el archivo de recuperación de reglas localizado en
+/etc/iptables.firewall.rules el cual se encarga de hacer persistir tras
+reinicios del servidor, toda nueva regla agregada a iptables
+.PP
+.B unblockip 
+realiza el procedimiento contrario eliminando todo bloqueo a la IP indicada
+.br
+se recomienda ver
+.BR unblockip (8)
+.SH EXAMPLES
+.B blockip 123.456.78.90
+.SH FILES
+.TP
+.B /etc/iptables.firewall.rules
+Archivo que contiene todas las reglas de iptables
+.TP
+.B /etc/network/if-pre-up.d/firewall
+Archivo requerido por el anterior, para reestablecer las reglas tras reinicios
+del servidor
+.SH SEE ALSO
+.BR iptables (8),
+.BR unblockip (8)
+.SH AUTHOR
+Eugenia Bahit <eugenia@member.fsf.org>
+.br
+http://www.eugeniabahit.com/proyectos
+
